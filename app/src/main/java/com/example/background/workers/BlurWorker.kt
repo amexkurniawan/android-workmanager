@@ -19,11 +19,9 @@ class BlurWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
         val resourceUri = inputData.getString(KEY_IMAGE_URI)
         makeStatusNotification("Blurring image", appContext)
 
+        sleep()
+
         return try {
-            // REMOVE THIS
-            //    val picture = BitmapFactory.decodeResource(
-            //          appContext.resources,
-            //          R.drawable.android_cupcake)
 
             if (TextUtils.isEmpty(resourceUri)) {
                 Log.e(TAG, "Invalid input uri")
@@ -43,7 +41,6 @@ class BlurWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
 
             Result.success(outputData)
         } catch (throwable: Throwable) {
-            Log.e(TAG, "Error applying blur")
             throwable.printStackTrace()
             Result.failure()
         }
