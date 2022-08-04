@@ -17,15 +17,17 @@
 package com.example.background.workers
 
 import android.content.Context
+import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.bumptech.glide.load.engine.executor.GlideExecutor.UncaughtThrowableStrategy.LOG
 import com.example.background.OUTPUT_PATH
 import java.io.File
-import timber.log.Timber
 
 /**
  * Cleans up temporary files generated during blurring process
  */
+private const val TAG = "CleanupWorker"
 class CleanupWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
 
     override fun doWork(): Result {
@@ -43,14 +45,14 @@ class CleanupWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params
                         val name = entry.name
                         if (name.isNotEmpty() && name.endsWith(".png")) {
                             val deleted = entry.delete()
-                            Timber.i("Deleted $name - $deleted")
+                            Log.d(TAG, "$name - $deleted")
                         }
                     }
                 }
             }
             Result.success()
         } catch (exception: Exception) {
-            Timber.e(exception)
+            Log.d(TAG, "$exception")
             Result.failure()
         }
     }
