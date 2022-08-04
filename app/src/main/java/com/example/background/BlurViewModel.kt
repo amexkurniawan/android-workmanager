@@ -71,8 +71,14 @@ class BlurViewModel(application: Application) : ViewModel() {
             continuation = continuation.then(blurBuilder.build())
         }
 
+        // Create charging constraint
+        val constraints = Constraints.Builder()
+            .setRequiresCharging(true)
+            .build()
+
         // Add WorkRequest to save the image to the filesystem
         val save = OneTimeWorkRequest.Builder(SaveImageToFileWorker::class.java)
+            //.setConstraints(constraints) // only run when phone is charging
             .addTag(TAG_OUTPUT)
             .build()
 
