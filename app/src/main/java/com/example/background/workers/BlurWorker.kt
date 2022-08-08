@@ -25,6 +25,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.example.background.KEY_IMAGE_URI
+import com.example.background.PROGRESS
 
 private const val TAG = "BlurWorker"
 class BlurWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
@@ -35,7 +36,11 @@ class BlurWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, params) {
         val resourceUri = inputData.getString(KEY_IMAGE_URI)
 
         makeStatusNotification("Blurring image", appContext)
-        sleep()
+        //sleep()
+        (0..100 step 10).forEach {
+            setProgressAsync(workDataOf(PROGRESS to it))
+            sleep()
+        }
 
         return try {
             if (TextUtils.isEmpty(resourceUri)) {
